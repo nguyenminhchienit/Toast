@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Toast</title>
+</head>
+<body>
+        <div id="toast">
+            <!-- <div class="toast toast--success">
+                <div class="toast__icon">
+                    <i class="fa-sharp fa-solid fa-circle-check"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">Success</h3>
+                    <p class="toast__meg">You were login success</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div> -->
+        </div>
+    
+        <div>
+            <div class="btn btn--success">Show success toast</div>
+            <div class="btn btn--erorr">Show error toast</div>
+          </div>
+
+        <script>
+
+            document.querySelector('.btn--success').onclick = function(){
+                toast({
+                    title: "Thành công!",
+                    message: "Bạn đã đăng ký thành công tài khoản NMC group.",
+                    type: "success",
+                    duration: 5000
+                });
+            }
+
+            document.querySelector('.btn--erorr').onclick =  function(){
+                toast({
+                    title: "Thất bại!",
+                    message: "Có lỗi xảy ra liên hệ hotline của NMC group để trợ giúp.",
+                    type: "error",
+                    duration: 5000
+                });
+            }
+
+            function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+                const main = document.querySelector('#toast');
+                if(main){
+                    const toast = document.createElement("div");
+
+                    const removeToast = setTimeout(() => {
+                        main.removeChild(toast);
+                    },duration + 1000) 
+
+                    toast.onclick = function(e){
+                        if(e.target.closest('.toast__close')){
+                            main.removeChild(toast)
+                            clearTimeout(removeToast);
+                        }
+                    };
+
+                    const icons = {
+                         success: 'fa-sharp fa-solid fa-circle-check',
+                         error:'fas fa-exclamation-circle'   
+                    }
+
+                    const icon = icons[type];
+                    const delay = (duration / 1000).toFixed(2);
+
+                    toast.classList.add("toast", `toast--${type}`);
+                    toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+                    toast.innerHTML = 
+                        `<div class="toast__icon">
+                            <i class="${icon}"></i>
+                        </div>
+                        <div class="toast__body">
+                            <h3 class="toast__title">${title}</h3>
+                            <p class="toast__meg">${message}</p>
+                        </div>
+                        <div class="toast__close">
+                            <i class="fas fa-times"></i>
+                        </div>`;
+                    main.appendChild(toast);
+                }
+
+            }
+        </script>
+</body>
+</html>
+
